@@ -2,8 +2,11 @@
 $umessage='';
 check_session();
 if (isset($_POST['quote_create'])) {
+	$cid=$_POST['cid'];
+	$sid=$_POST['sid'];
+	$no_of_item=$_POST['no_of_item'];
 	$quote_data=json_encode($_POST);
-	insert("quote",array('quote'=>$quote_data));
+	insert("quote",array('quote'=>$quote_data,'cid'=>$cid,'sid'=>$sid,'no_of_item'=>$no_of_item));
 }
 
 if(isset($_POST['deleteall']))
@@ -190,6 +193,7 @@ $inv_no=get_auto_increment('quote');
 								<th align="right" width="70">Rate</th>
 								<th align="right" width="70">Amount</th>
 							</tr>
+							<input type="hidden" name="no_of_item" value="<?php echo $_POST['no_of_item'] ?>">
 							<?php for($i=0;$i<$_POST['no_of_item'];$i++) { ?>
 							<tr style="background-color:#f4f6f7; text-align:center;">
 								<td><?php echo $i+1; ?></td>

@@ -1,11 +1,12 @@
 <?php 
-$iv='INV-551.pdf';
+$inv=4;
+$iv='INV-'.$inv.'.pdf';
 		$ivname='./invoices/'.$iv;
 		$dir = dirname(__FILE__);
 		
 		// Get the contents of the pdf into a variable for later
 		ob_start();
-		require_once($dir.'/invoice_html/invoice551.html');
+		require_once($dir.'/invoice_html/invoice551.php');
 		$pdf_html = ob_get_contents();
 		ob_end_clean();
 		

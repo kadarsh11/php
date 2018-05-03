@@ -194,38 +194,7 @@ $inv_no=get_auto_increment('invoices');
 								<td align="right" width="70">558.9<br>9%</td>
 								<td align="right" width="70">558.9<br>9%</td>
 								<td align="right" width="100">6210.0%</td>
-							</tr>
-							<tr>
-								<td>1</td>
-								<td>Renewal Of Website</td><br>
-								<td>3 Google App E-mail IDs, Domain, Hosting, Maintenance</td><br>
-								<td>1yr</td>
-								<td align="right" width="70">6210.00</td>
-								<td align="right" width="70">558.9<br>9%</td>
-								<td align="right" width="70">558.9<br>9%</td>
-								<td align="right" width="100">6210.0%</td>
-							</tr>
-							<tr>
-								<td>1</td>
-								<td>Renewal Of Website</td><br>
-								<td>3 Google App E-mail IDs, Domain, Hosting, Maintenance</td><br>
-								<td>1yr</td>
-								<td align="right" width="70">6210.00</td>
-								<td align="right" width="70">558.9<br>9%</td>
-								<td align="right" width="70">558.9<br>9%</td>
-								<td align="right" width="100">6210.0%</td>
-							</tr>
-							<tr>
-								<td>1</td>
-								<td>Renewal Of Website</td><br>
-								<td>3 Google App E-mail IDs, Domain, Hosting, Maintenance</td><br>
-								<td>1yr</td>
-								<td align="right" width="70">6210.00</td>
-								<td align="right" width="70">558.9<br>9%</td>
-								<td align="right" width="70">558.9<br>9%</td>
-								<td align="right" width="100">6210.0%</td>
-							</tr>
-							
+							</tr>							
 						</table>
 					</div>
 				</div>

@@ -1,3 +1,16 @@
+<?php
+$cid=$_POST['cid']; 
+$quote=sqlfetch("SELECT * FROM `quote` WHERE cid='$cid'");
+foreach ($quote as $quote_details) {
+	$quote_data=$quote_details;
+}
+$str_json=$quote_data['quote'];
+$json=htmlspecialchars_decode($str_json);
+$obj=json_decode($json,true);
+
+$no_of_item=$obj['no_of_item'];
+ ?>
+
 <html>
 	<head>
 		<style>
@@ -27,6 +40,23 @@
 		</style>
 	</head>
 	<body>
+			<?php 
+			$cid=$_POST['cid'];
+			$invoice_customer_detail=sqlfetch("Select * FROM `customer` where id='$cid'"); 
+			if(count($invoice_customer_detail))
+				foreach($invoice_customer_detail as $invoice_customer)
+				{
+					$default_customer=$invoice_customer;
+				}
+			?>
+			<?php 
+			$sales_details=sqlfetch("SELECT * FROM `sale_done` WHERE cid='$cid'");
+			if (count($sales_details)) {
+			foreach ($sales_details as $sales) {
+				$default_sales=$sales;
+			}
+			}
+			 ?>
 		<div class="main_container">
 		<div class="section header">
 			<div class="container">
@@ -40,7 +70,6 @@
 						Uttam Nagar, New Delhi<br>
 						Delhi - 110059<br>
 						India<br>
-						GSTIN 07EGVPK8784C2ZM
 						</p>
 				</div>
 			</div>
@@ -52,12 +81,12 @@
 					<div class="invoice_det_left">
 					<span>Bill To</span>
 					<p style="font-size:10px; font-family:sans-serif;">
-						<strong style="font-size:12;">AUGGMIN LIFESCIENCES. PRIVATE LIMITED</strong><br>
-						110/1, 101 1st Floor,<br>
-						Budela, Vikas Puri,<br>
-						New Delhi-110018<br>
-						India<br>
-						GSTIN 07AAQCA0930Q1Z8
+						<strong style="font-size:12;"><?php echo $obj['invoice_to_text']; ?></strong><br>
+						<?=$default_customer['addr'];?><br>
+						<?=$default_customer['city'];?><br>
+						<?=$default_customer['state'];?>-<?=$default_customer['zip'];?><br>
+						<?=$default_customer['country'];?><br>
+						<?php echo $obj['gst_num']; ?>
 						<br>
 						<br>
 						Place of Supply: Delhi
@@ -65,12 +94,10 @@
 					</div>
 					<div class="invoice_det_right">
 						<table align="right" style="font-size:10px;">
-							<tr><th>Tax Invoice#</th><td>INV551</td></tr>
-							<tr><th>Date</th><td>15 Apr 2018</td></tr>
+							<tr><th>Tax Invoice#</th><td><?php echo $iv; ?></td></tr>
+							<tr><th>Date</th><td><?php echo date("d-m-Y"); ?></td></tr>
 							<tr><th>Payment Terms</th><td>Paid</td></tr>
 							<tr><th>Payment Due Date</th><td>NA</td></tr>
-							<tr><th>Quotation Ref. No.#</th><td>Sandeep</td></tr>
-							<tr><th>Contact Person Name</th><td>Sandeep-9899308244</td></tr>
 						</table>
 					</div>
 				</div>
@@ -87,20 +114,18 @@
 								<th width="180">Description</th>
 								<th>Tenure</th>
 								<th align="right" width="70">Rate</th>
-								<th align="right" width="70">CGST</th>
-								<th align="right" width="70">SGST</th>
 								<th align="right" width="100">Amount</th>
 							</tr>
+							<?php for($i=0;$i<$no_of_item;$i++){ ?>
 							<tr>
-								<td>1</td>
-								<td>Rent</td><br>
-								<td>Rent of April 2018</td><br>
-								<td>1 mo</td>
-								<td align="right" width="70">65000.00</td>
-								<td align="right" width="70">5850.00<br>9%</td>
-								<td align="right" width="70">5850.00<br>9%</td>
-								<td align="right" width="100">76700.00</td>
+								<td><?php echo $i+1;; ?></td>
+								<td><?php echo $obj['service'][$i]; ?></td><br>
+								<td><?php echo $obj['description'][$i]; ?></td><br>
+								<td><?php echo $obj['tenure'][$i]; ?></td>
+								<td align="right" width="70"><?php echo $obj['rate'][$i]; ?></td>
+								<td align="right" width="100"><?php echo $obj['amount'][$i]; ?></td>
 							</tr>
+							<?php } ?>
 						</table>
 					</div>
 				</div>
@@ -130,17 +155,16 @@
 					</div>
 					<div class="invoice_det_bottom">
 						<table>
-							<tr><td width="100">&nbsp;</td><td align="right" width="70">Sub Total</td><td align="right" width="50">65000.00</td></tr>
-							<tr><td width="10">&nbsp;</td><td align="right" width="70">CGST(9%)</td><td align="right" width="50">5850.00</td></tr>
-							<tr><td width="10">&nbsp;</td><td align="right" width="70">SGST(9%)</td><td align="right" width="100">5850.00</td></tr>
+							<tr><td width="100">&nbsp;</td><td align="right" width="70">Sub Total</td><td align="right" width="50"><?php echo $default_sales['price']; ?></td></tr>
+							<tr><td width="10">&nbsp;</td><td align="right" width="70">GST(18%)</td><td align="right" width="50"><?php echo $gst=$default_sales['price']*0.18; ?></td></tr>
 							<tr><td colspan="3"><hr style="width:300px; margin-top:-1px;"></hr></td></tr>
-							<tr><td width="10">&nbsp;</td><td align="right" width="70">Total</td><td align="right" width="100">Rs.76700.00</td></tr>
+							<tr><td width="10">&nbsp;</td><td align="right" width="70">Total</td><td align="right" width="100"><?php echo $total_price=$default_sales['price']+$gst; ?></td></tr>
 							<tr><td colspan="3"><hr style="width:300px; margin-top:-2px;"></hr></td></tr>
-							<tr><td width="10">&nbsp;</td><td align="right" width="70">Previous Paid</td><td align="right" width="100">Rs.0.00</td></tr>
+							<tr><td width="10">&nbsp;</td><td align="right" width="70">Previous Paid</td><td align="right" width="100"><?php echo $default_sales['price']-$default_sales['balance']; ?></td></tr>
 							<tr><td colspan="3"><hr style="width:300px; margin-top:-2px;"></hr></td></tr>
-							<tr><td width="10">&nbsp;</td><td align="right" width="70">Paying Now</td><td align="right" width="100">Rs.76700.00</td></tr>
+							<tr><td width="10">&nbsp;</td><td align="right" width="70">Paying Now</td><td align="right" width="100"><?php echo $paid_amount=$_POST['paying_now']; ?></td></tr>
 							<tr><td colspan="3"><hr style="width:300px; margin-top:-2px;"></hr></td></tr>
-							<tr><td width="10">&nbsp;</td><td align="right" width="70">Balance Due</td><td align="right" width="100">Rs.0.00</td></tr>
+							<tr><td width="10">&nbsp;</td><td align="right" width="70">Balance Due</td><td align="right" width="100"><?php echo $balance=$default_sales['balance']-$_POST['paying_now']+$gst; ?></td></tr>
 							<tr><td colspan="3"><hr style="width:300px; margin-top:-2px;"></hr></td></tr>
 						</table>
 					</div>
@@ -179,3 +203,16 @@
 	
 	</body>
 </html>
+
+<?php 
+$status='';
+if ($balance==0) {
+	$status="Not Active";
+}
+else{
+	$status='active';
+}
+insert("invoices",array('cid'=>$cid,'status'=>$status,'total_price'=>$total_price,'paid_amount'=>$paid_amount,'balance'=>$balance));
+$balance_without_gst=$balance-$gst;
+sqlfetch("UPDATE sale_done SET balance='$balance_without_gst' WHERE cid='$cid'");
+ ?>

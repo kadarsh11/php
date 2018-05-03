@@ -117,8 +117,29 @@ if(isset($_POST['preview']))
 								<td colspan="1">Tax (<?php if($sale_done['take_tax']){ ?>18%<?php } else {?>0%<?php } ?>) : <?php echo $tax=numbertofloat(($sale_done['price']*18)/100);?></td>
 								<td colspan="1"><strong>Total : <?=numbertofloat($sub_total+$tax);?></strong></td>
 							</tr>
-							
-										
+							<tr>
+								<th></th>
+								<th></th>
+								<th></th>
+								<th>Dated</th>
+								<th>Amount</th>
+								<th>Status</th>
+								<th>Balance</th>
+								<th></th>
+							</tr>
+										<?php $prev_invoices=sqlfetch("SELECT * FROM invoices where sale_id='$sale_done_id'");
+										if(count($prev_invoices))
+											foreach($prev_invoices as $invoices){ ?>
+							<tr>
+								<td colspan="2"/>1</td>
+								<td colspan="6"/>
+									
+											<i class="fa fa-file-pdf-o fa-2x"></i>
+											<i class="fa fa-pdf-o fa-2x"></i>
+												
+								</td>
+							</tr>
+											<?php } ?>
 							<?php
 								}
 							?>
@@ -177,38 +198,6 @@ if(isset($_POST['preview']))
 						  </tr>
 						</table>
 						</form>
-
-						<table id="datatable-checkbox" class="table table-striped table-bordered bulk_action">
-						<h3>Previous invoices</h3>
-						  <thead>
-							<tr>
-								<th>Invoice ID</th>
-							  <th>Client Name</th>
-							  <th>Status</th>
-							  <td>Total amt.</td>
-							  <td>Paid</td>
-							  <th>Balance</th>
-							  <th>Date</th>
-							  <th>Preview</th>
-							</tr>
-						  </thead>
-						  <?php 
-						  $cid=$sale_done['cid'];
-						  $prev_invoices=sqlfetch("SELECT * FROM invoices WHERE cid='$cid'");
-						  foreach($prev_invoices as $prev_invoices_beta){
-						  	$prev_invoices_data=$prev_invoices_beta;
-						   ?>
-						  <tr>
-							<td><?php echo $prev_invoices_data['id']; ?></td>
-							<td><?php echo get_customer_name($sale_done['cid']); ?></td>
-							<td><?php echo $prev_invoices_data['status']; ?></td>
-							<td><?php echo $prev_invoices_data['total_price']; ?></td>
-							<td><?php echo $prev_invoices_data['paid_amount']; ?></td>
-							<td><?php echo $prev_invoices_data['balance']; ?></td>
-							<td><?php echo $prev_invoices_data['date']; ?></td>
-						  </tr>
-						  <?php } ?>
-						</table>
 					<!---Previous Invoices section-->
 				  </div>					
 					
